@@ -39,8 +39,7 @@ public:
     {
         delete timer;
     }
-    void onClose(wxCloseEvent& evt)
-    {
+    void onClose(wxCloseEvent& evt) {
         timer->Stop();
         evt.Skip();
     }
