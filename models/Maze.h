@@ -37,7 +37,7 @@ public:
     vector<pair<int, int>> adjacentCells;
 
     void selectCell();
-    void drawCell(wxDC& dc, unsigned int dx, unsigned int dy) const;
+    void drawCell(wxDC &dc, unsigned int dx, unsigned int dy, unsigned short int selectionMargin) const;
     vector<Cell*> getAdjacentUnvisitedCells(vector<vector<Cell*>> cells);
     Cell* getRandomUnvisitedAdjacentCell(vector<vector<Cell*>> cells);
 };
@@ -46,6 +46,7 @@ public:
 class Maze {
 public:
     Maze(unsigned int gx, unsigned int gy, unsigned int width, unsigned int height);
+    ~Maze();
     unsigned int gx, gy, width, height;
 
     vector<vector<Cell*>> cells;

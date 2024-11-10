@@ -15,6 +15,10 @@ DrawPanel::DrawPanel(wxFrame *parent) : wxPanel(parent, wxID_ANY) {
     maze->generateMaze_DFS();
 }
 
+DrawPanel::~DrawPanel() {
+    delete maze;
+}
+
 void DrawPanel::paintEvent(wxPaintEvent& evt) {
     wxPaintDC dc(this);
     render(dc);
@@ -25,7 +29,7 @@ void DrawPanel::paintNow() {
     render(dc);
 }
 
-void DrawPanel::render(wxDC &dc) {
+void DrawPanel::render(wxDC &dc) const {
 
     static int y = 0;
     static int y_speed = 2;

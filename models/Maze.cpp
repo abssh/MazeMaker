@@ -43,34 +43,6 @@ void Cell::selectCell() {
     this-> selected = true;
 }
 
-void Cell::drawCell(wxDC &dc, unsigned int dx, unsigned int dy) const {
-    wxColor color = visited ? Styles::White() : Styles::Grey10();
-    if (this->selected) {
-     color = Styles::LightRed();
-    }
-
-    dc.SetBrush(wxBrush(color));
-    // dc.SetBrush(wxNullBrush);
-    // dc.SetPen(wxPen(Styles::Grey10(), 3));
-    dc.SetPen(wxNullPen);
-
-    const int m = 0;
-    unsigned short int x1 = dx + (x * Size);
-    unsigned short int y1 = dy + (y * Size);
-
-    dc.DrawRectangle(x1+m, y1+m, Size - 2*m, Size - 2*m);
-
-    dc.SetPen(wxPen(Styles::Grey70(), 5));
-
-    // dc.DrawLine(x1, y1, x1 + Size, y1 + Size);
-    if (wallState.bottom && y != colSize - 1) {
-        dc.DrawLine(x1, y1 + Size, x1 + Size, y1 + Size);
-    }
-    if (wallState.right && x != rowSize - 1) {
-        dc.DrawLine(x1 + Size, y1, x1 + Size, y1 + Size);
-    }
-}
-
 vector<Cell *> Cell::getAdjacentUnvisitedCells(vector<vector<Cell *>> cells) {
     vector<Cell *> adjacentUnvisitedCells;
     for (auto pair : adjacentCells) {
@@ -105,6 +77,45 @@ Maze::Maze(unsigned int gx, unsigned int gy, unsigned int width, unsigned int he
             cellVec.push_back(cell);
         }
         cells.push_back(cellVec);
+    }
+}
+
+void Cell::drawCell(wxDC &dc, const unsigned int dx, const unsigned int dy,
+                    const unsigned short int selectionMargin = 10) const {
+
+    const wxColor color = visited ? Styles::White() : Styles::Grey10();
+
+    unsigned short int x1 = dx + (x * Size);
+    unsigned short int y1 = dy + (y * Size);
+
+    dc.SetBrush(wxBrush(color));
+    dc.SetPen(wxNullPen);
+
+    dc.DrawRectangle(x1, y1, Size, Size);
+
+    if (selected) {
+        dc.SetBrush(wxBrush(Styles::LightRed()));
+        const unsigned short int m = selectionMargin;
+        dc.DrawRectangle(x1+m, y1+m, Size - 2*m, Size - 2*m);
+    }
+
+    wxPen pen(Styles::Grey70(), 5);
+    pen.SetCap(wxCAP_BUTT);
+    dc.SetPen(pen);
+
+    if (wallState.bottom && y != colSize - 1) {
+        dc.DrawLine(x1, y1 + Size, x1 + Size, y1 + Size);
+    }
+    if (wallState.right && x != rowSize - 1) {
+        dc.DrawLine(x1 + Size, y1, x1 + Size, y1 + Size);
+    }
+}
+
+Maze::~Maze() {
+    for (const auto& cellVec : cells) {
+        for (const auto cell : cellVec) {
+            delete cell;
+        }
     }
 }
 

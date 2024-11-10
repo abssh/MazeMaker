@@ -12,12 +12,13 @@
 class DrawPanel : public wxPanel {
 
 public:
-    DrawPanel(wxFrame* parent);
+    explicit DrawPanel(wxFrame* parent);
+    ~DrawPanel() override;
 
     Maze* maze;
     void paintEvent(wxPaintEvent& evt);
     void paintNow();
-    void render(wxDC& dc);
+    void render(wxDC& dc) const;
 
     DECLARE_EVENT_TABLE()
 

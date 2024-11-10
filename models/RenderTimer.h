@@ -14,7 +14,7 @@ class RenderTimer : public wxTimer
     DrawPanel* pane;
 public:
     explicit RenderTimer(DrawPanel* pane);
-    void Notify();
+    void Notify() override;
     void start();
 };
 
