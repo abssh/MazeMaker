@@ -15,6 +15,8 @@ add_executable(MazeMaker main.cpp
         models/DrawPanel.h
         models/Maze.cpp
         models/Maze.h
-        models/Styles.h)
+        models/Styles.h
+        models/states/MazeState.cpp
+        models/states/MazeState.h)
 
 target_link_libraries(MazeMaker ${wxWidgets_LIBRARIES})

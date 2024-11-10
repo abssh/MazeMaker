@@ -1,10 +1,8 @@
-//
-// Created by deboom on 11/9/24.
-//
-
 #ifndef MAZE_H
 #define MAZE_H
 #include <wx/dc.h>
+
+#include "states/MazeState.h"
 
 using namespace std;
 
@@ -27,19 +25,26 @@ class Cell {
 public:
     Cell(unsigned int x, unsigned int y, unsigned int rowSize, unsigned int colSize);
 
-    static constexpr unsigned short int Size = 30;
+    static constexpr unsigned short int Size = 25;
 
     unsigned int x, y;
     unsigned int rowSize, colSize;
-    bool visited;
-    bool selected;
+
+    bool rdfs_visited = false;
+    bool dfs_visited = false;
+    bool bfs_visited = false;
+    bool selected = false;
+
     WallState wallState;
     vector<pair<int, int>> adjacentCells;
 
-    void selectCell();
+    void resetCell();
     void drawCell(wxDC &dc, unsigned int dx, unsigned int dy, unsigned short int selectionMargin) const;
-    vector<Cell*> getAdjacentUnvisitedCells(vector<vector<Cell*>> cells);
-    Cell* getRandomUnvisitedAdjacentCell(vector<vector<Cell*>> cells);
+    [[nodiscard]] vector<Cell*> get_adjacent_non_rdfs_visited_cells(const vector<vector<Cell*>> &cells);
+    [[nodiscard]] Cell* get_random_non_rdfs_visited_cell(vector<vector<Cell*>> cells);
+
+    [[nodiscard]] vector<Cell*> get_adjacent_non_dfs_visited_open_cells(const vector<vector<Cell*>> &cells) const;
+    [[nodiscard]] vector<Cell*> get_adjacent_non_bfs_visited_open_cells(const vector<vector<Cell*>> &cells) const;
 };
 
 
@@ -49,10 +54,19 @@ public:
     ~Maze();
     unsigned int gx, gy, width, height;
 
+    MazeStateRandomDFS randomDFSState;
+    MazeStateRandomDFSWalking randomDFSStateWalking{&this->width, &this->height};
+    MazeStateDFS dfsState;
+    MazeStateBFS bfsState;
+
     vector<vector<Cell*>> cells;
 
-    void drawMaze(wxDC& dc);
-    void generateMaze_DFS();
+    void resetMaze() const;
+    void drawMaze(wxDC& dc) const;
+    void generateMazeRandomDFS();
+    void generateMazeRandomDFSWalking();
+    void generateDFSAnswer();
+    void generateBFSAnswer();
 };
 
 
