@@ -242,16 +242,12 @@ void Maze::generateMazeRandomDFSWalking() {
         return;
     }
 
-    static int animationFlag = 0;
+    static bool startFlag = true;
 
     Cell *current_cell = cells[ms.cIndex[0]][ms.cIndex[1]];
 
     if (ms.running()) {
-        animationFlag = (animationFlag + 1) % 2;
-        if (animationFlag > 0) {
-            current_cell->selected = true;
-            return;
-        }
+        current_cell->selected = true;
 
         if (!current_cell->rdfs_visited) {
             current_cell->rdfs_visited = true;
@@ -280,6 +276,7 @@ void Maze::generateMazeRandomDFSWalking() {
             } else if (dy == -1) {
                 next_cell->wallState.bottom = false;
             }
+            next_cell -> selected = true;
             ms.cIndex[0] = next_cell->x;
             ms.cIndex[1] = next_cell->y;
         } else {
@@ -288,12 +285,14 @@ void Maze::generateMazeRandomDFSWalking() {
                 ms.solution.pop();
             }
             Cell *temp = ms.visitedCells.top();
+            temp -> selected = true;
             ms.cIndex[0] = temp->x;
             ms.cIndex[1] = temp->y;
         }
 
         current_cell->selected = false;
     } else {
+        current_cell->selected = false;
         ms.generate = false;
         ms.generated = true;
     }
@@ -315,15 +314,9 @@ void Maze::generateDFSAnswer() {
     auto &ms = this->dfsState;
 
 
-    static int animationFlag = 0;
-
     Cell *current_cell = cells[ms.cIndex[0]][ms.cIndex[1]];
     if (ms.running) {
-        animationFlag = (animationFlag + 1) % 2;
-        if (animationFlag > 0) {
-            current_cell->selected = true;
-            return;
-        }
+        current_cell->selected = true;
 
         if (!current_cell->dfs_visited) {
             current_cell->dfs_visited = true;
@@ -342,7 +335,6 @@ void Maze::generateDFSAnswer() {
             ms.path.pop();
 
             if (ms.path.empty()) {
-                // cout << "no answers" << endl;
                 ms.running = false;
                 ms.message = "DFS: couldn't find an answer";
                 ms.generate = false;

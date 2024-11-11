@@ -97,7 +97,6 @@ void DrawPanel::render(wxDC &dc) const {
     dc.Clear();
 
     if (maze->randomDFSState.generate) {
-        cout << "random DFS state generate" << endl;
         maze->generateMazeRandomDFS();
     } else if (maze->randomDFSStateWalking.generate) {
         maze->generateMazeRandomDFSWalking();
