@@ -13,4 +13,4 @@ make
 ```
 
 ## Preview
-[Uploading Screencast from 2024-11-11 21-45-08.webm…]()
+[Screencast from 2024-11-11 21-45-08.webm](https://github.com/user-attachments/assets/7de5102e-f789-4159-a91e-6bff403c54c3)
