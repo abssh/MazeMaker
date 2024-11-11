@@ -25,7 +25,7 @@ class MyFrame : public wxFrame
     DrawPanel* drawPane;
 
 public:
-    MyFrame() : wxFrame(nullptr, -1,  wxT("Hello wxDC"), wxPoint(50,50), wxSize(800,1000))
+    MyFrame() : wxFrame(nullptr, -1,  wxT("Maze Generater"), wxPoint(50,50), wxSize(800,1000))
     {
         auto *menuGen = new wxMenu;
         menuGen->Append(ID_RESET, "&Reset","Resets the Maze");
